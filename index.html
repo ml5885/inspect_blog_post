@@ -766,48 +766,54 @@ eval(tool_using_recommender(),
                     <h2>Strengths and Limitations</h2>
                     <h3>Strengths</h3>
                     <p>
-                        <b>Fine-grained control over prompting:</b> Inspect lets
-                        you implement advanced prompting techniques like
-                        chain-of-thought and self-critique through its solver
-                        API, without having to manually engineer complex prompt
-                        templates.
+                        <b>Comprehensive logging and visualization:</b> Inspect
+                        has detailed logging that tracks all parts of an
+                        evaluation. The log viewer is really good - it shows
+                        everything in a clear web interface. This makes it easy
+                        to see how models perform and fix problems.
                     </p>
                     <p>
-                        <b>Sandboxed code execution:</b> The framework provides
-                        secure execution environments for evaluating
-                        code-generating models, isolating potentially harmful
-                        outputs while still enabling realistic testing.
+                        <b>Support for complex evaluations:</b> The framework
+                        provides implementations for complex tasks like
+                        multi-step reasoning, chain-of-thought, and tool use.
                     </p>
                     <p>
-                        <b>Parallel evaluation with rate limiting:</b> Inspect
-                        automatically manages API rate limits and parallelizes
-                        requests when possible, reducing evaluation time from
-                        hours to minutes for large datasets.
+                        <b>Sandboxed code execution:</b> While we didn't use it
+                        in our example, Inspect lets you run code safely in a
+                        protected environment. This helps when testing models
+                        that generate code that might be risky.
                     </p>
                     <p>
-                        <b>Model-graded evaluation:</b> Built-in support for
-                        using LLMs as judges simplifies implementing evaluation
-                        for open-ended tasks where simple metrics like exact
-                        match aren't sufficient.
+                        <b>Flexible modular architecture:</b> Inspect is built
+                        with separate parts (datasets, solvers, scorers, tasks)
+                        that work together. You can mix and match these parts to
+                        create custom tests without starting from scratch each
+                        time.
                     </p>
+
                     <h3>Limitations</h3>
                     <p>
-                        <b>Limited visualization capabilities:</b> While the log
-                        viewer provides detailed execution traces, it lacks
-                        customizable dashboards and data visualization tools for
-                        comparing performance across multiple evaluations.
+                        <b>Model-dependent reliability:</b> The framework relies
+                        on models that aren't perfect. In our movie example, one
+                        evaluation was scored wrong because the judge model gave
+                        a "GRADE: B" when it should have used "GRADE: C" or
+                        "GRADE: I". These kinds of mistakes show how using
+                        models to judge other models can be unreliable.
                     </p>
                     <p>
-                        <b>Missing statistical analysis:</b> The framework
-                        doesn't include built-in statistical significance
-                        testing or confidence intervals, requiring manual
-                        implementation for rigorous comparison between models.
+                        <b>Learning curve and complexity:</b> The framework is
+                        flexible but also complex. New users might find it hard
+                        to learn. Setting up good evaluations means
+                        understanding how all the parts work together and how to
+                        write effective prompts.
                     </p>
                     <p>
-                        <b>Tool documentation gaps:</b> Several complex
-                        features, especially around custom tool implementation
-                        and sandboxing, have sparse documentation that requires
-                        digging through the source code to understand fully.
+                        <b>Adaptability challenges:</b> Even though Inspect
+                        tries to be flexible, the future of AI is unpredictable.
+                        As new types of models and capabilities emerge, the
+                        framework will need to keep changing to stay useful.
+                        What works for today's models might not work for
+                        tomorrow's.
                     </p>
                 </section>
                 <section>
