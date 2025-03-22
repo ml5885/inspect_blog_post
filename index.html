@@ -214,8 +214,9 @@ highlight.min.js">
                     </a>
                     is an open source framework from the UK AI Security
                     Institute (
-                    <a href="https://www.politico.eu/article/jd-vance-britain-
-ai-safety-institute-aisi-security/" target="_blank">
+                    <a
+                        href="https://www.politico.eu/article/jd-vance-britain-ai-safety-institute-aisi-security/"
+                        target="_blank">
                         formerly
                     </a> the UK AI Safety Institute)<label for="sn-institute"
                         class="margin-toggle sidenote-number">
@@ -228,17 +229,49 @@ ai-safety-institute-aisi-security/" target="_blank">
                     which aims to address these challenges.
                 </p>
                 <p>
-                    Traditional evaluation methods often struggle with LLMs.
-                    Simple metrics like accuracy don't capture the
-                    nuance of model outputs. Testing in isolation misses
-                    production concerns like rate limits and error handling.
-                    And models that use external tools introduce additional
-                    complexity.
+                    The UK AI Security Institute is a directorate of the
+                    Department of Science, Innovation, and Technology that
+                    conducts rigorous research to enable advanced AI governance.
+                    Notably, they conducted pre-deployment evaluations of
+                    frontier AI models like <a
+                        href="https://www.aisi.gov.uk/work/pre-deployment-evaluation-of-openais-o1-model"
+                        target="_blank">OpenAI's O1</a> and <a
+                        href="https://www.aisi.gov.uk/work/pre-deployment-evaluation-of-anthropics-upgraded-claude-3-5-sonnet"
+                        target="_blank">Anthropic's Claude 3.5 Sonnet</a> in
+                    collaboration with the US AI Safety Institute<label
+                        for="sn-us-aisi"
+                        class="margin-toggle sidenote-number"></label>
+                    <input type="checkbox" id="sn-us-aisi"
+                        class="margin-toggle" />
+                    <span class="sidenote">
+                        In related news, the US AISI's <a
+                            href="https://techcrunch.com/2025/02/22/us-ai-safety-institute-could-face-big-cuts/"
+                            target="_blank">future
+                            looks grim</a>.
+                    </span>
+                    testing capabilities across domains such as cybersecurity,
+                    biological research, and software development.
+                </p>
+                <p>
+                    Traditional evaluation methods for LLMs often suffer from
+                    fragmentation and inaccessibility. Evaluations tend to be
+                    insular, frequently propped up by custom internal tooling
+                    and disparate code notebooks. This lack of standardization
+                    makes it difficult to compare results across models or
+                    research teams, while the absence of shared
+                    infrastructure forces researchers to repeatedly reinvent
+                    evaluation methodologies. Additionally, as models
+                    increasingly incorporate external tools and autonomous
+                    capabilities, the complexity of proper evaluation grows
+                    beyond what ad-hoc approaches can effectively measure.
                 </p>
                 <p>
                     Inspect provides a flexible, extensible framework for
                     creating evaluations that test LLMs more thoroughly.
-                    Released in May 2024, it has since gained adoption among
+                    <a
+                        href="https://www.gov.uk/government/news/ai-safety-institute-releases-new-ai-safety-evaluations-platform"
+                        target="_blank">Released</a>
+                    in May 2024, it has since gained adoption among
                     researchers and engineers working on model
                     evaluation. In this post, I'll explain how Inspect works,
                     demonstrate it with a practical movie
