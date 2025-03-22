@@ -548,13 +548,17 @@ def movie_database():
     """Tool to query information about movies."""
     
     async def execute(movie_name: str):
-        """Get information about a movie from the database.
-        
-        Args:
-            movie_name: The name of the movie to look up
         """
-        # In a real implementation, this would connect to a movie database
-        # For this example, we'll just return mock data
+        Query information about movies.
+
+        Args:
+            movie_name (str): The name of the movie to look up.
+
+        Returns:
+            dict: A dictionary containing movie information or an error message if not found.
+        """
+        # These movies are obtained from the ones in the movie API
+        # provided by the instructors
         movies = {
             "The Dark Knight": {
                 "year": 2008,

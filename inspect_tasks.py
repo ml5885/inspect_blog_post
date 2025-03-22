@@ -81,6 +81,8 @@ def movie_database():
         Returns:
             dict: A dictionary containing movie information or an error message if not found.
         """
+        # These movies are obtained from the ones in the movie API
+        # provided by the instructors
         movies = {
             "The Dark Knight": {
                 "year": 2008,
