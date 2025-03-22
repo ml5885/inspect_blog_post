@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset"utf-8" />
+        <meta name"viewport" content"width=device-width, initial-scale1" />
+        <title>
+            Inspect: An Open Source Framework for LLM Evaluations
+        </title>
+        <link rel="stylesheet"
+            href="tufte.css" />
+        <link rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/stackoverflow-dark.min.css"
+            media="(prefers-color-scheme: dark)" />
+        <link rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/stackoverflow-light.min.css"
+            media="(prefers-color-scheme: light)" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/
+highlight.min.js">
+    </script>
+        <script>
+        hljs.highlightAll();
+    </script>
+        <style>
+        :root {
+            --background-color: #f9f9f9;
+            --text-color: #111;
+            --link-color: #0000ee;
+            --visited-link-color: #551a8b;
+            --code-bg: #f0f0f0;
+            --code-color: #333;
+            --blockquote-border: #ccc;
+            --highlight-bg: #fff8dc;
+            --warning-bg: #ffe6e6;
+            --note-bg: #e6f3ff;
+            --table-header-bg: #f5f5f5;
+            --table-border: #ddd;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --background-color: #151515;
+                --text-color: #e0e0e0;
+                --link-color: #8ab4f8;
+                --visited-link-color: #c58af9;
+                --code-bg: #2d2d2d;
+                --code-color: #e0e0e0;
+                --blockquote-border: #555;
+                --highlight-bg: #3a3a2c;
+                --warning-bg: #3d2929;
+                --note-bg: #25344d;
+                --table-header-bg: #2d2d2d;
+                --table-border: #444;
+            }
+        }
+
+        body {
+            max-width: 1400px;
+            margin: 0 auto;
+            counter-reset: sidenote-counter;
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+
+        section {
+            padding-bottom: 0;
+        }
+
+        p {
+            width: 60% !important;
+        }
+
+        h1,
+        h2,
+        h3,
+        p,
+        li,
+        table {
+            color: var(--text-color);
+        }
+
+        h3 {
+            font-style: normal;
+            margin-top: 3rem;
+        }
+
+        a {
+            color: var(--link-color);
+        }
+
+        a:visited {
+            color: var(--visited-link-color);
+        }
+
+        .subtitle {
+            font-style: italic;
+            margin-top: -1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .author {
+            margin-bottom: 0.5rem;
+        }
+
+        .date {
+            margin-bottom: 2rem;
+        }
+
+        .code-block code {
+            border-radius: 5px;
+        }
+
+        .sidenote code {
+            font-size: 0.8em !important;
+        }
+
+        img {
+            max-width: 100%;
+        }
+
+        figure {
+            margin: 2rem 0;
+        }
+
+        figcaption {
+            font-size: 0.9rem;
+            font-style: italic;
+            text-align: center;
+            margin-top: 0.5rem;
+        }
+
+        blockquote {
+            border-left: 3px solid var(--blockquote-border);
+            padding-left: 1rem;
+            margin-left: 0;
+            font-style: italic;
+        }
+
+        .highlight {
+            background-color: var(--highlight-bg);
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            margin: 1.5rem 0;
+        }
+
+        .warning {
+            background-color: var(--warning-bg);
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            margin: 1.5rem 0;
+        }
+
+        .note {
+            background-color: var(--note-bg);
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            margin: 1.5rem 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+        }
+
+        th,
+        td {
+            border: 1px solid var(--table-border);
+            padding: 0.5rem;
+        }
+
+        th {
+            background-color: var(--table-header-bg);
+        }
+
+        .sidenote,
+        .marginnote {
+            color: var(--text-color);
+            opacity: 0.8;
+        }
+
+        @media (max-width: 760px) {
+            pre {
+                font-size: 0.8em;
+            }
+        }
+    </style>
+    </head>
+
+    <body>
+        <article>
+            <h1>
+                Inspect: An Open Source Framework for LLM Evaluations
+            </h1>
+            <p class="subtitle">
+                A systematic approach to testing language models
+            </p>
+            <p class="author">
+                Michael Li • March 21, 2025
+            </p>
+            <section>
+                <h2>Introduction</h2>
+                <p>
+                    As language models become more capable and widely deployed,
+                    the need for robust evaluation frameworks has
+                    grown. Evaluating these models presents unique challenges:
+                    they require testing across many dimensions
+                    (accuracy, helpfulness, safety), their capabilities evolve
+                    rapidly, and their behaviors can be difficult to
+                    quantify.
+                    <a href="https://inspect.ai-safety-institute.org.uk/"
+                        target="_blank">
+                        Inspect
+                    </a>
+                    is an open source framework from the UK AI Security
+                    Institute (
+                    <a href="https://www.politico.eu/article/jd-vance-britain-
+ai-safety-institute-aisi-security/" target="_blank">
+                        formerly
+                    </a> the UK AI Safety Institute)<label for="sn-institute"
+                        class="margin-toggle sidenote-number">
+                    </label>
+                    <input type="checkbox" id="sn-institute"
+                        class="margin-toggle" />
+                    <span class="sidenote">
+                        Nothing ominous about this whatsoever.
+                    </span>
+                    which aims to address these challenges.
+                </p>
+                <p>
+                    Traditional evaluation methods often struggle with LLMs.
+                    Simple metrics like accuracy don't capture the
+                    nuance of model outputs. Testing in isolation misses
+                    production concerns like rate limits and error handling.
+                    And models that use external tools introduce additional
+                    complexity.
+                </p>
+                <p>
+                    Inspect provides a flexible, extensible framework for
+                    creating evaluations that test LLMs more thoroughly.
+                    Released in May 2024, it has since gained adoption among
+                    researchers and engineers working on model
+                    evaluation. In this post, I'll explain how Inspect works,
+                    demonstrate it with a practical movie
+                    recommendation example, and discuss its strengths and
+                    limitations.
+                </p>
+            </section>
+            <section>
+                <h2>What Is Inspect?</h2>
+                <p>
+                    Inspect is a Python framework built specifically for
+                    evaluating language models. At its core, Inspect
+                    provides a systematic approach to testing LLMs across
+                    multiple dimensions such as accuracy, reasoning
+                    ability, and safety.
+                </p>
+                <p>
+                    The framework follows a modular architecture with components
+                    that work together to create flexible and
+                    powerful evaluations:
+                </p>
+                <h3>Core Components</h3>
+                <p>
+                    <b>Datasets</b> contain the test examples that models will
+                    be evaluated on. Each example (or "sample")
+                    typically includes an input prompt and an expected output or
+                    "target." Inspect supports various data formats
+                    including CSV, JSON, and Hugging Face datasets.
+                </p>
+                <p>
+                    <b>Solvers</b> process the inputs and produce outputs.
+                    They define how to interact with the model – from
+                    simple prompting to chain-of-thought to complex multi-turn
+                    dialogues. Solvers can be chained together to
+                    implement sophisticated evaluation strategies.
+                </p>
+                <p>
+                    <b>Scorers</b> evaluate the model outputs against expected
+                    targets. This might involve exact matching, fuzzy
+                    comparison, model-graded evaluation, or custom scoring
+                    logic. Scorers produce metrics that summarize model
+                    performance.
+                </p>
+                <p>
+                    <b>Tasks</b> are the fundamental unit of evaluation in
+                    Inspect. A task brings everything together by
+                    combining a dataset with solvers and scorers to define a
+                    complete evaluation. Tasks can include options for
+                    parallel execution, error handling, and environment
+                    configuration.
+                </p>
+                <p>
+                    Here's a simple example of defining a task in Inspect:
+                </p>
+                <div class="code-block">
+                    <pre class="python"><code>from inspect_ai import Task, task
+from inspect_ai.dataset import example_dataset
+from inspect_ai.scorer import model_graded_fact
+from inspect_ai.solver import generate, system_message
+
+@task
+def simple_qa():
+    return Task(
+        dataset=example_dataset("simple_qa"),
+        solver=[
+            system_message("You are a helpful assistant."),
+            generate()
+        ],
+        scorer=model_graded_fact()
+    )</code></pre>
+                </div>
+                <p>
+                    This code defines a task that:
+                </p>
+                <ol>
+                    <li>Uses a dataset of QA pairs</li>
+                    <li>Applies a system message to orient the model</li>
+                    <li>Generates responses from the model</li>
+                    <li>
+                        Scores the responses using another model as a judge
+                    </li>
+                </ol>
+                <p>
+                    Inspect supports many model providers including OpenAI,
+                    Anthropic, Google, and others. It handles parallel
+                    evaluation, provides detailed logging, supports tool-using
+                    agents, includes secure sandboxing for code
+                    execution, and has a VSCode extension for a better developer
+                    experience.
+                </p>
+            </section>
+            <section>
+                <h2>Using Inspect for Movie Recommendations</h2>
+                <p>
+                    Suppose we are Netflix, in the not-so-distant future, and
+                    we've offloaded our entire recommendation system to
+                    a single LLM
+                    <label for="sn-netflix"
+                        class="margin-toggle sidenote-number">
+                    </label>
+                    <input type="checkbox" id="sn-netflix"
+                        class="margin-toggle" />
+                    <span class="sidenote">
+                        I origninally made this up, but it <br />turns out
+                        this is actually
+                        <a href="https://research.netflix.com/publication/
+large-language-models-as-zero-shot-conversational-recommenders" target="_blank">
+                            real
+                        </a>.
+                    </span>
+                    Let's use Inspect to evaluate our LLM on its movie
+                    recommendations.
+                </p>
+                <p>
+                    First, we'll install Inspect.
+                </p>
+                <div class="code-block">
+                    <pre
+                        class="bash"><code>!pip install inspect-ai</code></pre>
+                </div>
+                <p>
+                    Next, we'll create a dataset of movie recommendation
+                    scenarios. In a real-world setting, we might draw these
+                    from user queries and known good recommendations, but for
+                    this example, we'll create them manually. Each
+                    sample contains a user query about movie recommendations and
+                    an expected target that represents ideal
+                    recommendations.
+                </p>
+                <div class="code-block">
+                    <pre class="python"><code>import json
+from inspect_ai.dataset import Sample, MemoryDataset
+
+# Define our test cases
+recommendation_samples = [
+    Sample(
+        input="I liked 'The Dark Knight' and 'Inception'. What similar movies would I like?",
+        target="Christopher Nolan films like Interstellar, Oppenheimer or The Prestige",
+        metadata={"category": "director_based"}
+    ),
+    Sample(
+        input="I'm looking for feel good documentaries similar to 'Won't You Be My Neighbor'",
+        target="Positive documentaries like 'RBG', 'Jiro Dreams of Sushi' or 'Crip Camp'",
+        metadata={"category": "genre_specific"}
+    ),
+    Sample(
+        input="What are some good movies to watch with my 8-year-old child?",
+        target="Family-friendly animated films like 'How to Train Your Dragon', 'Big Hero 6' or 'The Mitchells vs the Machines'",
+        metadata={"category": "audience_specific"}
+    )
+]
+
+# Create a dataset
+recommendation_dataset = MemoryDataset(recommendation_samples)
+
+# Optionally save to a file for reuse
+with open("movie_recommendations.json", "w") as f:
+    json.dump([s.__dict__ for s in recommendation_samples], f)</code></pre>
+                </div>
+                <p>
+                    Now, let's define a system message to orient the model to
+                    its role as a movie recommendation system. This will
+                    help set the context for the model's responses:
+                </p>
+                <div class="code-block">
+                    <pre class="python"><code>SYSTEM_MESSAGE = """
+You are an expert movie recommendation system. Your job is to provide
+relevant movie recommendations based on the user's preferences. Consider
+genre, director, themes, and style when making recommendations. Be specific
+and suggest actual movie titles that the user might enjoy based on their
+stated preferences.
+"""</code></pre>
+                </div>
+                <p>
+                    Next, we'll create a custom scorer that checks for multiple
+                    criteria in the recommendations. This will give
+                    us a more nuanced evaluation than a simple text match:
+                </p>
+                <div class="code-block">
+                    <pre
+                        class="python"><code>from inspect_ai.model import get_model
+from inspect_ai.scorer import Score, Target, TaskState, accuracy, scorer, stderr
+
+@scorer(metrics=[accuracy(), stderr()])
+def recommendation_quality():
+    """Score recommendations on relevance, diversity, and explanation."""
+    
+    SCORER_TEMPLATE = """
+Evaluate the following movie recommendation response against the ideal
+target. Score each criterion on a scale of 0-2:
+
+- Relevance: Are the recommended movies similar to the user's preferences?
+  (0-2)
+- Diversity: Does the response provide a variety of options? (0-2)
+- Explanation: Does the response explain why these movies were recommended?
+  (0-2)
+
+User request: {request}
+Model response: {response}
+Ideal response: {target}
+
+For each criterion, provide a score and brief justification.
+Then provide a final overall score as "GRADE: C" for correct (total >= 4)
+or "GRADE: I" for incorrect.
+"""
+    
+    async def score(state: TaskState, target: Target):
+        prompt = SCORER_TEMPLATE.format(
+            request=state.input_text,
+            response=state.output.completion,
+            target=target.text
+        )
+        
+        result = await get_model().generate(prompt)
+        
+        # Extract grade (C or I) from response
+        if "GRADE: C" in result.completion:
+            value = "C"
+        else:
+            value = "I"
+            
+        return Score(
+            value=value,
+            answer=state.output.completion,
+            explanation=result.completion
+        )
+    
+    return score</code></pre>
+                </div>
+                <p>
+                    This scorer uses another model to grade the recommendations.
+                    It evaluates relevance, diversity, and whether
+                    the response provides explanations. The grader model looks
+                    at both the model's output and the expected
+                    target, then makes a judgment about quality.
+                </p>
+                <p>
+                    Now let's create our evaluation task. We'll define multiple
+                    approaches to test different prompting strategies
+                    like chain-of-thought:
+                    <label for="sn-approaches"
+                        class="margin-toggle sidenote-number">
+                    </label>
+                    <input type="checkbox" id="sn-approaches"
+                        class="margin-toggle" />
+                    <span class="sidenote">
+                        Reasoning is in vogue, so we're going to use it. For
+                        more information on the built-in solvers (like
+                        <code>system_message()</code>,
+                        <code>chain_of_thought()</code>,
+                        and <code>self_critique()</code>), check out the
+                        <a href="https://inspect.aisi.org.uk/solvers.html"
+                            target="_blank">
+                            documentation
+                        </a>.
+                    </span>
+                </p>
+                <div class="code-block">
+                    <pre class="python"><code>from inspect_ai import Task, task
+from inspect_ai.dataset import json_dataset
+from inspect_ai.scorer import model_graded_fact
+from inspect_ai.solver import chain_of_thought, generate, system_message
+
+@task
+def movie_recommendation_eval(approach="basic"):
+    """Evaluate movie recommendation quality using different approaches.
+    
+    Args:
+        approach: Either "basic", "cot" (chain of thought), or "custom_score"
+    """
+    if approach == "basic":
+        solver = [system_message(SYSTEM_MESSAGE), generate()]
+        scorer = model_graded_fact()
+    elif approach == "cot":
+        solver = [
+            system_message(SYSTEM_MESSAGE),
+            chain_of_thought(),
+            generate()
+        ]
+        scorer = model_graded_fact()
+    elif approach == "custom_score":
+        solver = [system_message(SYSTEM_MESSAGE), generate()]
+        scorer = recommendation_quality()
+    else:
+        raise ValueError(f"Unknown approach: {approach}")
+    
+    return Task(
+        dataset=json_dataset("movie_recommendations.json"),
+        solver=solver,
+        scorer=scorer
+    )</code></pre>
+                </div>
+                <p>
+                    This task definition allows us to compare different
+                    approaches. We can also add a tool-using capability to our
+                    evaluation. This would allow the model to look up additional
+                    information about movies when making
+                    recommendations:
+                </p>
+                <div class="code-block">
+                    <pre
+                        class="python"><code>from inspect_ai.solver import use_tools
+from inspect_ai.tool import tool
+
+@tool
+def movie_database():
+    """Tool to query information about movies."""
+    
+    async def execute(movie_name: str):
+        """Get information about a movie from the database.
+        
+        Args:
+            movie_name: The name of the movie to look up
+        """
+        # In a real implementation, this would connect to a movie database
+        # For this example, we'll just return mock data
+        movies = {
+            "The Dark Knight": {
+                "year": 2008,
+                "director": "Christopher Nolan",
+                "genre": ["Action", "Crime", "Drama"],
+                "rating": 9.0
+            },
+            "Inception": {
+                "year": 2010,
+                "director": "Christopher Nolan",
+                "genre": ["Action", "Adventure", "Sci-Fi"],
+                "rating": 8.8
+            }
+            # More movies would be defined here...
+        }
+        
+        # Simple fuzzy matching
+        for name, info in movies.items():
+            if movie_name.lower() in name.lower():
+                return {
+                    "name": name,
+                    "info": info
+                }
+        
+        return {"error": f"Movie '{movie_name}' not found in database"}
+    
+    return execute
+
+@task
+def tool_using_recommender():
+    """Evaluation task for a recommendation system that uses tools."""
+    
+    return Task(
+        dataset=json_dataset("movie_recommendations.json"),
+        solver=[
+            system_message(SYSTEM_MESSAGE),
+            use_tools([movie_database()]),
+            generate()
+        ],
+        scorer=recommendation_quality()
+    )</code></pre>
+                </div>
+                <p>
+                    This adds a tool that allows the model to query a (mock)
+                    movie database. In an actual implementation, this
+                    could connect to an actual database or API to get
+                    information about movies.
+                </p>
+                <p>
+                    Finally, let's run our evaluations and analyze the results.
+                    We'll use Mistral 7B Instruct
+                    <label for="sn-mistral"
+                        class="margin-toggle sidenote-number"></label>
+                    <input type="checkbox" id="sn-mistral"
+                        class="margin-toggle" />
+                    <span class="sidenote">
+                        This choice is a solely economic one. I only <br>
+                        get $1.00 in free credits from Together AI, and <br>
+                        Mistral 7B Instruct is $0.20/1M tokens.
+                    </span>
+                    via the Together AI API for this example:
+                </p>
+                <div class="code-block">
+                    <pre class="python"><code>from inspect_ai import eval
+                  
+                  eval(movie_recommendation_eval(approach="basic"),
+                       model="together/mistralai/Mistral-7B-Instruct-v0.2")
+                  
+                  eval(movie_recommendation_eval(approach="cot"),
+                       model="together/mistralai/Mistral-7B-Instruct-v0.2")
+                  
+                  eval(movie_recommendation_eval(approach="custom_score"),
+                       model="together/mistralai/Mistral-7B-Instruct-v0.2")
+                  
+                  eval(tool_using_recommender(),
+                       model="together/mistralai/Mistral-7B-Instruct-v0.2")
+                  
+                  # The results are logged to the /logs folder</code></pre>
+                </div>
+                <p>
+                    Inspect will execute each evaluation, call the models, and
+                    compute metrics.
+                    The results are logged comprehensively, allowing us to
+                    analyze performance in detail.
+                </p>
+                <p>
+                    Inspect provides a built-in log viewer for exploring and
+                    analyzing results.
+                    You can start it with:
+                </p>
+                <div class="code-block">
+                    <pre class="bash"><code>inspect view</code></pre>
+                </div>
+                <p>
+                    This opens a web interface that shows detailed information
+                    about each evaluation, including model inputs and outputs,
+                    scoring decisions, and performance metrics. This view is
+                    very detailed and more informatoin can be found
+                    <a href="https://inspect.aisi.org.uk/log-viewer.html"
+                        target="_blank">here</a>.
+                </p>
+                <figure>
+                    <label for="mn-demo"
+                        class="margin-toggle">&#8853;</label>
+                    <input type="checkbox" id="mn-demo" class="margin-toggle" />
+                    <span class="marginnote">
+                        Here's what the main view of an evaluation log looks
+                        like in the Inspect dashboard.
+                    </span>
+                    <img
+                        src="dashboard.png"
+                        alt="Inspect Dashboard Evaluation Log">
+                </figure>
+                <figure>
+                    <label for="mn-demo"
+                        class="margin-toggle">&#8853;</label>
+                    <input type="checkbox" id="mn-demo" class="margin-toggle" />
+                    <span class="marginnote">
+                        And here's what the log history view looks like.
+                    </span>
+                    <img
+                        src="dashboard2.png"
+                        alt="Inspect Dashboard Evaluation Log History">
+                </figure>
+                <p>
+                    This example only touches the surface of what's possible
+                    with Inspect.
+                    The framework provides many more capabilities, including
+                    parallel execution of evaluations
+                    across multiple models, caching to reduce API costs,
+                    integration with CI/CD pipelines,
+                    and support for complex agent evaluations.
+                    You can learn more in the <a
+                        href="https://inspect.aisi.org.uk/"
+                        target="_blank">official documentation</a>.
+                </p>
+                <p>
+                    The UK AI Security Institute also maintains a collection of
+                    community-contributed evaluations using the Inspect
+                    framework called
+                    <a href="https://ukgovernmentbeis.github.io/inspect_evals/"
+                        target="_blank">Inspect Evals</a>,
+                    which includes benchmarks for coding (<a
+                        href="https://ukgovernmentbeis.github.io/inspect_evals/evals/coding/swe_bench/"
+                        target="_blank">SWE-Bench</a>,
+                    <a
+                        href="https://ukgovernmentbeis.github.io/inspect_evals/evals/coding/scicode/"
+                        target="_blank">SciCode</a>),
+                    agents (<a
+                        href="https://ukgovernmentbeis.github.io/inspect_evals/evals/assistants/osworld/"
+                        target="_blank">OSWorld</a>,
+                    <a
+                        href="https://ukgovernmentbeis.github.io/inspect_evals/evals/assistants/sycophancy/"
+                        target="_blank">Sycophancy Eval</a>),
+                    cybersecurity (<a
+                        href="https://ukgovernmentbeis.github.io/inspect_evals/evals/cybersecurity/cybench/"
+                        target="_blank">CyBench</a>,
+                    <a
+                        href="https://ukgovernmentbeis.github.io/inspect_evals/evals/cybersecurity/intercode_ctf/"
+                        target="_blank">InterCode:
+                        CTF</a>),
+                    and more. Looking through them is pretty interesting, and
+                    gives a sense of what the frontier evaluation landscape
+                    looks like.
+                </p>
+                <section>
+                    <h2>Strengths and Limitations</h2>
+                    <h3>Strengths</h3>
+                    <p>
+                        <b>Fine-grained control over prompting:</b> Inspect lets
+                        you implement advanced prompting techniques like
+                        chain-of-thought and self-critique through its solver
+                        API, without having to manually engineer complex prompt
+                        templates.
+                    </p>
+                    <p>
+                        <b>Sandboxed code execution:</b> The framework provides
+                        secure execution environments for evaluating
+                        code-generating models, isolating potentially harmful
+                        outputs while still enabling realistic testing.
+                    </p>
+                    <p>
+                        <b>Parallel evaluation with rate limiting:</b> Inspect
+                        automatically manages API rate limits and parallelizes
+                        requests when possible, reducing evaluation time from
+                        hours to minutes for large datasets.
+                    </p>
+                    <p>
+                        <b>Model-graded evaluation:</b> Built-in support for
+                        using LLMs as judges simplifies implementing evaluation
+                        for open-ended tasks where simple metrics like exact
+                        match aren't sufficient.
+                    </p>
+                    <h3>Limitations</h3>
+                    <p>
+                        <b>Limited visualization capabilities:</b> While the log
+                        viewer provides detailed execution traces, it lacks
+                        customizable dashboards and data visualization tools for
+                        comparing performance across multiple evaluations.
+                    </p>
+                    <p>
+                        <b>Missing statistical analysis:</b> The framework
+                        doesn't include built-in statistical significance
+                        testing or confidence intervals, requiring manual
+                        implementation for rigorous comparison between models.
+                    </p>
+                    <p>
+                        <b>Tool documentation gaps:</b> Several complex
+                        features, especially around custom tool implementation
+                        and sandboxing, have sparse documentation that requires
+                        code-diving to fully understand.
+                    </p>
+                    <p>
+                        <b>No browser automation:</b> Unlike some agent
+                        evaluation frameworks, Inspect lacks built-in browser
+                        automation capabilities for testing models on real-world
+                        web interfaces.
+                    </p>
+                    <p>
+                        <b>API dependency overhead:</b> Each evaluation incurs
+                        API costs that can accumulate quickly, especially when
+                        using model-graded evaluation which doubles API calls
+                        per sample.
+                    </p>
+                </section>
+                <section>
+                    <h2>Conclusion</h2>
+                    <p>
+                        Inspect is a Python framework for evaluating language
+                        models that provides components for datasets, solvers,
+                        scorers, and task definitions. It enables systematic
+                        testing across various dimensions of model performance.
+                    </p>
+                    <p>
+                        It's interesting to see a government institution like
+                        the UK AI Security Institute developing and
+                        open-sourcing an evaluation framework. The field of LLM
+                        evaluation is rapidly developing, and frameworks like
+                        Inspect will likely continue to adapt as new model
+                        capabilities emerge and evaluation methodologies mature.
+                    </p>
+                    <p>
+                        If you're interested in what the frontier of LLM
+                        evaluations looks like, especially in the context of
+                        safety, I recommend
+                        <a href="https://www.apolloresearch.ai/blog"
+                            target="_blank">reading</a>
+                        <a
+                            href="https://arxiv.org/abs/2212.09251"
+                            target="_blank">these</a>
+                        <a href="https://arxiv.org/abs/2403.13793"
+                            target="_blank">articles</a>.
+                    </p>
+                </section>
+            </article>
+            <footer>
+                <p>
+                    Built with HTML and
+                    <a href="https://edwardtufte.github.io/tufte-css/"
+                        target="_blank">
+                        Tufte CSS
+                    </a>
+                </p>
+            </footer>
+        </body>
+
+    </html>

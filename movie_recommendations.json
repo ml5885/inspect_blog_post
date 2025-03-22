@@ -1,0 +1,22 @@
+[
+	{
+		"input": "I liked 'The Dark Knight' and 'Inception'. What similar movies would I like?",
+		"target": "Christopher Nolan films like Interstellar, Oppenheimer or The Prestige",
+		"metadata": { "category": "director_based" }
+	},
+	{
+		"input": "I'm looking for feel good documentaries similar to 'Won't You Be My Neighbor'",
+		"target": "Positive documentaries like 'RBG', 'Becoming' or 'Crip Camp'",
+		"metadata": { "category": "genre_specific" }
+	},
+	{
+		"input": "Recommend me something like 'Parasite' but I've already seen 'Snowpiercer'",
+		"target": "Social commentary films like 'Sorry to Bother You', 'The Platform' or 'High-Rise'",
+		"metadata": { "category": "thematic" }
+	},
+	{
+		"input": "What are some good movies to watch with my 8-year-old child?",
+		"target": "Family-friendly animated films like 'How to Train Your Dragon', 'Big Hero 6' or 'The Mitchells vs the Machines'",
+		"metadata": { "category": "audience_specific" }
+	}
+]
