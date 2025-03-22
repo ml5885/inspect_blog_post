@@ -660,19 +660,19 @@ def tool_using_recommender():
                 <div class="code-block">
                     <pre class="python"><code>from inspect_ai import eval
                   
-                  eval(movie_recommendation_eval(approach="basic"),
-                       model="together/mistralai/Mistral-7B-Instruct-v0.2")
-                  
-                  eval(movie_recommendation_eval(approach="cot"),
-                       model="together/mistralai/Mistral-7B-Instruct-v0.2")
-                  
-                  eval(movie_recommendation_eval(approach="custom_score"),
-                       model="together/mistralai/Mistral-7B-Instruct-v0.2")
-                  
-                  eval(tool_using_recommender(),
-                       model="together/mistralai/Mistral-7B-Instruct-v0.2")
-                  
-                  # The results are logged to the /logs folder</code></pre>
+eval(movie_recommendation_eval(approach="basic"),
+    model="together/mistralai/Mistral-7B-Instruct-v0.2")
+
+eval(movie_recommendation_eval(approach="cot"),
+    model="together/mistralai/Mistral-7B-Instruct-v0.2")
+
+eval(movie_recommendation_eval(approach="custom_score"),
+    model="together/mistralai/Mistral-7B-Instruct-v0.2")
+
+eval(tool_using_recommender(),
+    model="together/mistralai/Mistral-7B-Instruct-v0.2")
+
+# The results are logged to the /logs folder</code></pre>
                 </div>
                 <p>
                     Inspect will execute each evaluation, call the models, and
